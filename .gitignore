@@ -177,6 +177,7 @@ target
 README.html
 .exercism
 
+*.db
 .DS_Store
 out/
 .micronaut/
