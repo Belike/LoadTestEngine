@@ -1,0 +1,30 @@
+spring.datasource:
+  url: jdbc:h2:./camunda-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#shareable h2 database: jdbc:h2:./camunda-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+  username: sa
+  password: sa
+spring.h2.console.enabled: true
+camunda.bpm:
+  admin-user:
+    id: demo
+    password: demo
+    firstName: Demo
+    lastName: Demo
+  filter:
+    create: All Tasks
+  default-serialization-format: application/json
+  job-execution:
+    enabled: true
+    queue-capacity: 100
+    core-pool-size: 10
+    max-pool-size: 50
+    lock-time-in-millis: 180000
+    wait-time-in-millis: 2500
+    max-jobs-per-acquisition: 50
+    deployment-aware: false
+  history-level: AUDIT
+
+management.endpoints.web.exposure.include: prometheus
+server.port: 8080
+
+sleeping-time-in-millis: 500
