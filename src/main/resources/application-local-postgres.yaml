@@ -22,6 +22,10 @@ camunda.bpm:
     max-jobs-per-acquisition: 50
     deployment-aware: false
   history-level: AUDIT
+  client:
+    base-url: http://localhost:${server.port}/engine-rest
+    lock-duration: 20000
+    async-response-timeout: 60000
 
 management.endpoints.web.exposure.include: prometheus
 server.port: 8080
