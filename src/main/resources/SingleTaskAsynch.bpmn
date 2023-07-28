@@ -4,15 +4,15 @@
     <bpmn:startEvent id="StartEvent_1" name="LoadTest Instance initiated">
       <bpmn:outgoing>Flow_151a9lk</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_151a9lk" sourceRef="StartEvent_1" targetRef="Activity_0k7029m" />
-    <bpmn:serviceTask id="Activity_0k7029m" name="Execute Task" camunda:asyncBefore="true" camunda:delegateExpression="${sleepingDelegate}">
+    <bpmn:sequenceFlow id="Flow_151a9lk" sourceRef="StartEvent_1" targetRef="ServiceTask_Async" />
+    <bpmn:serviceTask id="ServiceTask_Async" name="Execute Task" camunda:asyncBefore="true" camunda:delegateExpression="${sleepingDelegate}">
       <bpmn:incoming>Flow_151a9lk</bpmn:incoming>
       <bpmn:outgoing>Flow_1ligkxt</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1tg6ctz" name="LoadTest Instance finished">
       <bpmn:incoming>Flow_1ligkxt</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1ligkxt" sourceRef="Activity_0k7029m" targetRef="Event_1tg6ctz" />
+    <bpmn:sequenceFlow id="Flow_1ligkxt" sourceRef="ServiceTask_Async" targetRef="Event_1tg6ctz" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="SingleTaskAsynchProcess">
@@ -22,7 +22,7 @@
           <dc:Bounds x="152" y="142" width="90" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_17a5cvz_di" bpmnElement="Activity_0k7029m">
+      <bpmndi:BPMNShape id="Activity_17a5cvz_di" bpmnElement="ServiceTask_Async">
         <dc:Bounds x="270" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

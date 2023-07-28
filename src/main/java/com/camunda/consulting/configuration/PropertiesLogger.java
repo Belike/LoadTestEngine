@@ -16,10 +16,10 @@ public class PropertiesLogger {
     private final ProcessEngine processEngine;
     private final TaskExecutionProperties taskExecutionProperties;
 
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:dev}")
     private String activeProfile;
 
-    @Value("${sleeping-time-in-millis}")
+    @Value("${sleeping-time-in-millis:1000}")
     private Integer sleepingTimeInMillis;
 
 
@@ -38,5 +38,6 @@ public class PropertiesLogger {
         log.info("--- JobExecutor.CoreThreads: {}", taskExecutionProperties.getPool().getCoreSize());
         log.info("--- JobExecutor.MaximumThreads: {}", taskExecutionProperties.getPool().getMaxSize());
         log.info("--- JobExecutor.QueueCapacity: {}", taskExecutionProperties.getPool().getQueueCapacity());
+        log.info("********************************************");
     }
 }

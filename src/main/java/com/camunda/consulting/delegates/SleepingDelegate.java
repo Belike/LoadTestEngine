@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SleepingDelegate implements JavaDelegate {
 
-    @Value("${sleeping-time-in-millis}")
+    @Value("${sleeping-time-in-millis:1000}")
     private Integer sleepingTime;
 
     public void execute(DelegateExecution delegateExecution) throws Exception {

@@ -19,7 +19,7 @@ import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
  */
 @SpringBootTest
 @Import(ProcessEngineCoverageConfiguration.class)
-public class ProcessUnitTest {
+public class ProcessUnitSpringBootTest {
 
   @Autowired
   private ProcessEngine processEngine;
@@ -30,14 +30,17 @@ public class ProcessUnitTest {
   }
 
   @Test
-  @Deployment(resources = "process.bpmn") // only required for process test coverage
+  @Deployment(resources = "SingleTaskAsynch.bpmn") // only required for process test coverage
   public void testHappyPath() {
     // Drive the process by API and assert correct behavior by camunda-bpm-assert
 
     ProcessInstance processInstance = processEngine().getRuntimeService()
         .startProcessInstanceByKey(ProcessConstants.PROCESS_DEFINITION_KEY);
 
-    assertThat(processInstance).isEnded();
+    assertThat(processInstance).isWaitingAt("ServiceTask_Async");
+    execute(job());
+
+    assertThat(processInstance).isEnded().hasPassed("ServiceTask_Async");
 
   }
 
