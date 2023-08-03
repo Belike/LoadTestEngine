@@ -3,7 +3,7 @@ spring.datasource:
   username: ${SPRING_DATASOURCE_USERNAME}
   password: ${SPRING_DATASOURCE_PASSWORD}
   hikari:
-    maximum-pool-size: 256
+    maximum-pool-size: 128
 camunda.bpm:
   admin-user:
     id: demo

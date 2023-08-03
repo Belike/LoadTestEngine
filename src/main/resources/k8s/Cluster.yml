@@ -1,12 +1,24 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
+
 metadata:
   name: norman-load
   region: eu-central-1
-nodeGroups:
+  version: "1.25"
+
+managedNodeGroups:
   - name: db
     desiredCapacity: 1
     instanceType: c6i.4xlarge
+    volumeSize: 50
+    volumeType: gp3
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
   - name: engine
     desiredCapacity: 3
     instanceType: c6i.xlarge
