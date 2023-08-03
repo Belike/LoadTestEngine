@@ -14,7 +14,7 @@ public class SleepingDelegate implements JavaDelegate {
     private Integer sleepingTime;
 
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        log.info("Going to sleeeeeeep...");
+        log.info("Going to sleeeeeeep for {}ms", sleepingTime);
         Thread.sleep(sleepingTime);
     }
 }

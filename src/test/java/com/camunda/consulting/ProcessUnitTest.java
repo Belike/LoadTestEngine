@@ -1,15 +1,22 @@
 package com.camunda.consulting;
 
+import com.camunda.consulting.delegates.SleepingDelegate;
 import com.camunda.consulting.util.ProcessConstants;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.engine.test.mock.Mocks;
+import org.camunda.community.process_test_coverage.junit5.platform7.ProcessEngineCoverageExtension;
 import org.camunda.community.process_test_coverage.spring_test.platform7.ProcessEngineCoverageConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
 
@@ -17,16 +24,23 @@ import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
 /**
  * Test case starting an in-memory database-backed Process Engine.
  */
-@SpringBootTest
-@Import(ProcessEngineCoverageConfiguration.class)
-public class ProcessUnitSpringBootTest {
+@ExtendWith(ProcessEngineCoverageExtension.class)
+@TestPropertySource(properties = {
+        "sleepingTime =100"
+})
+public class ProcessUnitTest {
 
   @Autowired
   private ProcessEngine processEngine;
 
+  @Mock
+  SleepingDelegate sleepingDelegateMock;
+
   @BeforeEach
   public void setup() {
     init(processEngine);
+    MockitoAnnotations.openMocks(this);
+    Mocks.register("sleepingDelegate", sleepingDelegateMock);
   }
 
   @Test

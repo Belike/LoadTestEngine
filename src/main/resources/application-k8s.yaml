@@ -1,10 +1,9 @@
 spring.datasource:
-  url: jdbc:postgresql://localhost:5432/camunda
-  username: camunda
-  password: camunda
+  url: ${SPRING_DATASOURCE_URL}
+  username: ${SPRING_DATASOURCE_USERNAME}
+  password: ${SPRING_DATASOURCE_PASSWORD}
   hikari:
-    maximum-pool-size: 100
-spring.h2.console.enabled: true
+    maximum-pool-size: 256
 camunda.bpm:
   admin-user:
     id: demo

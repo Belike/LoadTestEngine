@@ -3,6 +3,12 @@
 camunda.bpm:
   job-execution.enabled: false
   id-generator: simple
+  client:
+    base-url: http://localhost:${server.port}/engine-rest
+    lock-duration: 20000
+    async-response-timeout: 60000
 
 spring.datasource:
   url: jdbc:h2:mem:camunda-spring-boot-test;DB_CLOSE_ON_EXIT=false
+
+server.port: 8080
