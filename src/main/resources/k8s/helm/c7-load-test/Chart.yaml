@@ -1,0 +1,15 @@
+apiVersion: v2
+name: c7-load-test
+description: A Helm chart for running a load test against a Camunda 7
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 11.x.x
+    condition: "postgresql.enabled"
+  - name: kube-prometheus-stack
+    repository: https://prometheus-community.github.io/helm-charts
+    version: 48.2.x
+    condition: "kube-prometheus-stack.enabled"

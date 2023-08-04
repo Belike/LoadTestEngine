@@ -1,0 +1,164 @@
+# Default values for c7-load-test.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: consulting/loadtestengine
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.1"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  - name: CAMUNDA_BPM_ADMIN_USER_ID
+    value: "demo"
+  - name: CAMUNDA_BPM_ADMIN_USER_PASSWORD
+    value: "demo"
+  - name: CAMUNDA_BPM_ADMIN_USER_FIRSTNAME
+    value: "Demo"
+  - name: CAMUNDA_BPM_ADMIN_USER_LASTNAME
+    value: "Demo"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_ENABLED
+    value: "true"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_DEPLOYMENT_AWARE
+    value: "false"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_QUEUE_CAPACITY
+    value: "2048"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_CORE_POOL_SIZE
+    value: "8"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_MAX_POOL_SIZE
+    value: "64"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_KEEP_ALIVE_SECONDS
+    value: "2500"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_MAX_JOBS_PER_ACQUISITION
+    value: "256"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_LOCK_TIME_IN_MILLIS
+    value: "180000"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_WAIT_TIME_IN_MILLIS
+    value: "5000"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_MAX_WAIT
+    value: "30000"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_BACKOFF_TIME_IN_MILLIS
+    value: "0"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_MAX_BACKOFF
+    value: "0"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_BACKOFF_DECREASE_THRESHOLD
+    value: "100"
+  - name: CAMUNDA_BPM_JOB_EXECUTION_WAIT_INCREASE_FACTOR
+    value: "2"
+  - name: CAMUNDA_BPM_HISTORY-LEVEL
+    value: "NONE"
+  - name: CAMUNDA_BPM_CLIENT_BASE_URL
+    value: "http://localhost:${SERVER_PORT}/engine-rest"
+  - name: CAMUNDA_BPM_CLIENT_LOCK_DURATION
+    value: "20000"
+  - name: CAMUNDA_BPM_CLIENT_ASYNC_RESPONSE_TIMEOUT
+    value: "60000"
+  - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+    value: "prometheus"
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SLEEPING_TIME_IN_MILLIS
+    value: "100"
+
+prometheusServiceMonitor:
+  enabled: true
+  labels:
+    release: metrics
+  scrapeInterval: 10s
+
+postgresql:
+  enabled: true
+  image:
+    tag: 12.15.0-debian-11-r77
+  auth:
+    username: camunda
+    password: camunda
+    database: camunda
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+kube-prometheus-stack:
+  enabled: true
+  ## Requried for Docker-Desktop
+  prometheus-node-exporter:
+    hostRootFsMount:
+      enabled: false
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
