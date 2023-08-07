@@ -26,7 +26,7 @@
   If you don't have an ingress controller you can use `kubectl port-forward` to access the deployed web application from outside the cluster:
 
   Camunda 7 Load Test Spring Boot Application:
-  > kubectl port-forward svc/{{ .Release.Name }}-c7-load-test 8080:8080
+  > kubectl port-forward svc/{{ .Release.Name }}-c7-load-test 8080:80
 
   {{ if .Values.postgresql.enabled -}}
   Postgresql:
