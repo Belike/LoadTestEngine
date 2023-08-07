@@ -1,0 +1,40 @@
+# ({{ .Chart.Name }} - {{ .Chart.Version }})
+
+   _____          __  __ _    _ _   _ _____            ______   _      ____          _____    _______ ______  _____ _______
+  / ____|   /\   |  \/  | |  | | \ | |  __ \   /\     |____  | | |    / __ \   /\   |  __ \  |__   __|  ____|/ ____|__   __|
+ | |       /  \  | \  / | |  | |  \| | |  | | /  \        / /  | |   | |  | | /  \  | |  | |    | |  | |__  | (___    | |
+ | |      / /\ \ | |\/| | |  | | . ` | |  | |/ /\ \      / /   | |   | |  | |/ /\ \ | |  | |    | |  |  __|  \___ \   | |
+ | |____ / ____ \| |  | | |__| | |\  | |__| / ____ \    / /    | |___| |__| / ____ \| |__| |    | |  | |____ ____) |  | |
+  \_____/_/    \_\_|  |_|\____/|_| \_|_____/_/    \_\  /_/     |______\____/_/    \_\_____/     |_|  |______|_____/   |_|
+
+
+- Camunda Platform 7 Load Test Spring Boot Application:
+  - Replica: {{ .Values.replicaCount }}
+  - Image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+  - Service Name: {{ .Release.Name }}-c7-load-test
+  - Service Port: {{ .Values.service.port }}
+
+- Postgresql:
+  - Enabled: {{ .Values.postgresql.enabled }}
+  - Image: {{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
+  - Database: {{ .Values.postgresql.auth.database }}
+
+- Prometheus Stack:
+  - Enabled: {{ index .Values "kube-prometheus-stack" "enabled" }}
+  - Service Name Grafana: {{ .Release.Name }}-grafana
+
+  If you don't have an ingress controller you can use `kubectl port-forward` to access the deployed web application from outside the cluster:
+
+  Camunda 7 Load Test Spring Boot Application:
+  > kubectl port-forward svc/{{ .Release.Name }}-c7-load-test 8080:80
+
+  {{ if .Values.postgresql.enabled -}}
+  Postgresql:
+  > kubectl port-forward svc/{{ .Release.Name }}-postgresql 5432:5432
+  {{- end }}
+
+  {{ if index .Values "kube-prometheus-stack" "enabled" -}}
+  Grafana:
+  > kubectl port-forward svc/{{ .Release.Name }}-grafana 81:80
+  {{- end }}
+

@@ -54,6 +54,20 @@ and inspect it using
 ## Environment Restrictions
 Built and tested against Camunda Platform version 7.19.0.
 
+## Helm Release
+
+```bash
+docker build -t consulting/loadtestengine:0.1 .
+```
+
+```bash
+cd src/main/resources/k8s/helm
+```
+
+```bash
+helm install load-test c7-load-test/ --values c7-load-test/values.yaml
+```
+
 ## Known Limitations
 
 ## License
