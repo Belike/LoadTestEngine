@@ -6,9 +6,14 @@ metadata:
   labels: {{- include "c7-load-test.labels" . | nindent 4 }}
     {{- toYaml .Values.prometheusServiceMonitor.labels | nindent 4}}
 spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "c7-load-test.labels" . | nindent 4 }}
+      app.kubernetes.io/name: {{ include "c7-load-test.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+
   endpoints:
     - honorLabels: true
       path: /actuator/prometheus
